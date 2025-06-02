@@ -1,8 +1,3 @@
-def main():
-    play()
+import chess_moves as cm
 
-def play():
-    #TODO
-
-if "__name__" == "__main__":
-    main()
+cm.play()
