@@ -26,6 +26,7 @@ remaining_black_pieces = {
     "Bishop": 2,
     "Knight": 2
     }
+empty_cell = '-'
 
 def main():
     board = initiate_new_board()
@@ -53,19 +54,35 @@ def initiate_new_board():
     for number in rows:
         empty_board[number] = {}
         for letter in columns:
-            empty_board[number][letter] = '-'
+            empty_board[number][letter] = empty_cell
     return empty_board
 
 def print_current_board(board):
     print("")
-    print("  ABCDEFGH")
+    col_names = "   "
+
     for row in board:
-        temp = f"{row} "
-        for column in board[row]:
-            temp += board[row][column]
-        temp += f" {row}"
+        for key in board[row]:
+            col_names += f" {key}  "
+        break
+    print(col_names)
+    print("  "+"_" * 33)
+    temp = ""
+    for key1, value1 in board.items():
+        temp += f"{key1} |"
+        for key2, value2 in board[key1].items():
+            if (int(key1) % 2 == 1 and key2 in 'ACEG') or (int(key1) % 2 == 0 and key2 in 'BDFH'):
+                if value2 == empty_cell:
+                    temp += f"···|"
+                else:
+                    temp += f"·{value2}·|"
+            else:
+                    temp += f" {value2} |"
+        temp += f" {key1}"
         print(temp)
-    print("  ABCDEFGH")
+        temp = ""
+    print("  "+"‾" * 33)
+    print(col_names)
     print("")
 
 def prompt_for_white_piece(board):
@@ -141,7 +158,7 @@ def prompt_for_black_pieces(board):
             print("Invalid position - only letters A-H and numbers 1-8 are accepted.")
         elif piece in black_pieces and remaining_black_pieces[piece] == 0:
             print(f"Invalid: there are no more {piece} pieces left.")
-        elif current_board[int(y)][x] != "-":
+        elif current_board[int(y)][x] != empty_cell:
             print(f"Position {x}{y} is already taken.")
         else:
             print(f"A black {piece} has been added to {position}.")
@@ -173,11 +190,11 @@ def add_pieces_randomly(board):
         x2 = random.choice('ABCDEFGH')
         y2 = random.randint(1, 8)
      
-        if remaining_black_pieces[random_black_item[0]] != 0 and current_board[y2][x2] == "-":
+        if remaining_black_pieces[random_black_item[0]] != 0 and current_board[y2][x2] == empty_cell:
             current_board[y2][x2] = random_black_item[1]
             added_black_pieces += 1
             remaining_black_pieces[random_black_item[0]] -= 1
-            time.sleep(0.05)
+            # time.sleep(0.05)
             print(f"- Black {random_black_item[0]}: {x2}{y2}")
             if added_black_pieces == 16:
                 done = True
@@ -219,7 +236,7 @@ def determine_possible_moves(board):
         elif y == 'A':
             row = x + 1
             col = chr(ord(y) + 1)
-            if current_board[row][col] == "-":
+            if current_board[row][col] == empty_cell:
                 pass
             else:           
                 for key, value in black_pieces.items():
@@ -230,7 +247,7 @@ def determine_possible_moves(board):
         elif y == 'H':
             row = x + 1
             col = chr(ord(y) - 1)
-            if current_board[row][col] == "-":
+            if current_board[row][col] == empty_cell:
                 pass
             else:           
                 for key, value in black_pieces.items():
@@ -244,7 +261,7 @@ def determine_possible_moves(board):
                 chr(ord(y) + 1),
                 chr(ord(y) - 1)
                 ]
-            if current_board[row][cols[0]] == "-" and current_board[row][cols[1]] == "-":
+            if current_board[row][cols[0]] == empty_cell and current_board[row][cols[1]] == empty_cell:
                 pass
             else:   
                 for c in cols:        
@@ -266,7 +283,7 @@ def determine_possible_moves(board):
 
         for i in range(dist_to_top):
             x1 += 1
-            if current_board[x1][y1] == "-":
+            if current_board[x1][y1] == empty_cell:
                 continue
             else:
                 for key, value in black_pieces.items():
@@ -282,7 +299,7 @@ def determine_possible_moves(board):
         
         for i in range(dist_to_bottom):
             x1 -= 1
-            if current_board[x1][y1] == "-":
+            if current_board[x1][y1] == empty_cell:
                 continue
             else:
                 for key, value in black_pieces.items():
@@ -298,7 +315,7 @@ def determine_possible_moves(board):
 
         for i in range(dist_to_right):
             y1 = chr(ord(y1) + 1)
-            if current_board[x1][y1] == "-":
+            if current_board[x1][y1] == empty_cell:
                 continue
             else:
                 for key, value in black_pieces.items():
@@ -314,7 +331,7 @@ def determine_possible_moves(board):
 
         for i in range(dist_to_left):
             y1 = chr(ord(y1) - 1)
-            if current_board[x1][y1] == "-":
+            if current_board[x1][y1] == empty_cell:
                 continue
             else:
                 for key, value in black_pieces.items():
