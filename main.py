@@ -1,3 +1,3 @@
-import chess_moves as cm
+import chess_moves
 
-cm.play()
+chess_moves.main()
