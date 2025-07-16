@@ -3,11 +3,7 @@ import random
 import time
 
 white_pieces = {
-    # "King": '\u2654',
-    # "Queen": '\u2655',
     "Rook": '\u2656',
-    # "Bishop": '\u2657',
-    # "Knight": '\u2658',
     "Pawn": '\u2659'
     }
 black_pieces = {
@@ -89,7 +85,7 @@ def prompt_for_white_piece(board):
     good_input = False
 
     while good_input == False:
-        user_input = input('Enter the name of a white chest piece and it\'s position seperated by space (e.g. "Rook D9"): ')
+        user_input = input('Enter the name of a white chest piece (Rook or Pawn only) and it\'s position seperated by space (e.g. "Rook D9"): ')
         user_input = re.sub(r'\s+', ' ', user_input).strip()
         spaces_in_input = user_input.count(" ")
 
@@ -194,7 +190,7 @@ def add_pieces_randomly(board):
             current_board[y2][x2] = random_black_item[1]
             added_black_pieces += 1
             remaining_black_pieces[random_black_item[0]] -= 1
-            # time.sleep(0.05)
+            time.sleep(0.05)
             print(f"- Black {random_black_item[0]}: {x2}{y2}")
             if added_black_pieces == 16:
                 done = True
@@ -345,7 +341,6 @@ def determine_possible_moves(board):
         y1 = y
         stop_outer == False
 
-    #Prints a message on what black pieces the white one can hit:
     if len(hittable_positions) == 0:
         print(f"There is nothing for \033[32mWhite {white_piece_name}\033[0m to hit.")
     else:
@@ -356,5 +351,5 @@ def determine_possible_moves(board):
 
     print_current_board(current_board)
 
-if "__name__" == "__main__":
+if __name__ == "__main__":
     main()
